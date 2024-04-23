@@ -16,7 +16,9 @@ module Trestle
       end
 
       def login!(auth_hash)
-        session[:trestle_user] = request.env["omniauth.auth"].slice(*%w[provider uid info extra]).as_json
+        session[:trestle_user] = request.env["omniauth.auth"].slice(
+          *Trestle.config.omniauth.session_keys
+        ).as_json
         @current_user = auth_hash
       end
 

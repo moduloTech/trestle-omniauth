@@ -27,6 +27,8 @@ module Trestle
 
       option :providers, {}
 
+      option :session_keys, -> { %w[provider uid info extra] }
+
       def provider(name, *args)
         providers[name] = args
       end

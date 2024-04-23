@@ -1,4 +1,8 @@
-<%= hook("omniauth.login.heading") %>
+<header class="auth-header">
+  <%= hook("omniauth.login.heading") do %>
+    <h1><%= trestle_omniauth_title %></h1>
+  <% end %>
+</header>
 
 <% if flash[:error] -%>
   <div class="alert alert-danger">
