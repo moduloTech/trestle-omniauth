@@ -1,3 +1,5 @@
+require 'hashie/mash'
+
 module Trestle
   module Omniauth
     module ControllerMethods
@@ -12,14 +14,16 @@ module Trestle
       protected
 
       def current_user
-        @current_user ||= session[:trestle_user]
+        return @current_user if defined?(@current_user)
+
+        @current_user = Hashie::Mash.new(session[:trestle_user]) if session.key?(:trestle_user)
       end
 
-      def login!(auth_hash)
+      def login!(_auth_hash)
         session[:trestle_user] = request.env["omniauth.auth"].slice(
           *Trestle.config.omniauth.session_keys
         ).as_json
-        @current_user = auth_hash
+        current_user
       end
 
       def logout!
