@@ -16,14 +16,16 @@ module Trestle
       def current_user
         return @current_user if defined?(@current_user)
 
-        @current_user = Hashie::Mash.new(session[:trestle_user]) if session.key?(:trestle_user)
+        @current_user = (Hashie::Mash.new(session[:trestle_user]) if session.key?(:trestle_user))
       end
 
-      def login!(_auth_hash)
-        session[:trestle_user] = request.env["omniauth.auth"].slice(
-          *Trestle.config.omniauth.session_keys
-        ).as_json
-        current_user
+      def login!(auth_hash)
+        if auth_hash
+          session[:trestle_user] = auth_hash.slice(*Trestle.config.omniauth.session_keys).as_json
+          remove_instance_variable(:@current_user) if defined?(@current_user)
+        else
+          logout!
+        end
       end
 
       def logout!
