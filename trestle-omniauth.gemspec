@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie", ">= 4.1.0"
 
   spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "cssbundling-rails"
 end
